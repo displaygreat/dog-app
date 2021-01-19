@@ -9,12 +9,15 @@ class BreedCard extends React.Component {
   }
 
   render() {
-
+    const breedName = this.props.breed.breedName;
+  
     return(
     <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src={this.props.breed.breedImage} />
+        <div className="img-wrap">
+          <Card.Img className="dog-img" variant="top" src={this.props.breed.breedImage} />
+        </div>
         <Card.Body>
-          <Card.Title>{this.props.breed.breedName}</Card.Title>
+          <Card.Title>{breedName[0].toUpperCase()+breedName.slice(1)}</Card.Title>
           <Card.Text>Best Breed</Card.Text>
         </Card.Body>
     </Card>

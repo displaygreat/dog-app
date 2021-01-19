@@ -3,15 +3,28 @@ import axios from 'axios';
 import './BreadGallery.css';
 import BreedModel from '../../data-models/BreedModel';
 import BreedCard from '../BreedCard/BreedCard';
-import { Container } from 'react-bootstrap';
+import { Container, Form, Button } from 'react-bootstrap';
 
 class BreedGallery extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      breeds: []
+      breeds: [],
+      value: ''
     }
   }
+
+  searchByBreed = (e) => {
+    const value = e.target.value;
+    console.log(value);
+    this.setState({
+      value: value
+    })
+  }
+
+  // updateImages = () => {
+    
+  // }
 
   componentDidMount() {
 
@@ -24,7 +37,10 @@ class BreedGallery extends React.Component {
 
         axios.get(`https://dog.ceo/api/breed/${breedName}/images`)
         .then((response) => {
-          let breedImage = response.data.message[0];
+          let arrImages = response.data.message;
+          // let breedImage = response.data.message[0];
+          let randomImageIndex = Math.floor(Math.random() * arrImages.length);
+          let breedImage = arrImages[randomImageIndex]
           this.setState({
           breeds: this.state.breeds.concat(new BreedModel(breedName, breedImage))
           })    
@@ -32,20 +48,24 @@ class BreedGallery extends React.Component {
       }
     })
   }
-  // https://dog.ceo/api/breed/hound/images/random
+
   render() {
-    const breeds = this.state.breeds;
-    console.log(breeds);
-    const breedsGallery = breeds.map((breed) => {
-      return <BreedCard breed={breed}></BreedCard>
+    const filteredBreedGallery = this.state.breeds.filter((breed) => {
+      return breed.breedName.toLowerCase().indexOf(this.state.value.toLowerCase()) !==-1 
     })
-    console.log(breedsGallery);
+
     return(
       <div className="c-breed-gallery">
         <Container>
-          <h2>Breeds Gallery</h2>
+          <h2 className="subtitle my-5">Breeds Gallery</h2>
+          <div className="nav">
+            <Form.Control className="w-25" type="search" placeholder="Search by breed" onChange={this.searchByBreed}/>
+            <Button variant="outline-light" onClick={this.updateImages}>Update Images</Button>
+          </div>
           <div className="cards">
-            {breedsGallery}
+            {filteredBreedGallery.map((breed, index) =>{
+              return <BreedCard key={index} breed={breed}></BreedCard>
+            })}
           </div>
         </Container>
       </div>
@@ -54,11 +74,3 @@ class BreedGallery extends React.Component {
 }
 
 export default BreedGallery;
-
-// git remote remove origin
-// To add a remote:
-
-// git remote add origin yourRemoteUrl
-// and finally
-
-// git push -u origin master

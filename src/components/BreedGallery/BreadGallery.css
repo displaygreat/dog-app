@@ -1,9 +1,14 @@
-h2 {
+.subtitle {
   color: #fff;
 }
 .c-breed-gallery {
   padding: 40px 0;
   background-color: #546e7a;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
 }
 .cards {
   display: flex;

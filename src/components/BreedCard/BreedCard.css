@@ -3,3 +3,10 @@
   margin: 20px 0;
   padding: 20px;
 }
+.img-wrap {
+  height: 240px;
+}
+.dog-img {
+  height: 100%;
+  object-fit: cover;
+}

@@ -1,7 +1,6 @@
 import './App.css';
 import { Container, Jumbotron } from 'react-bootstrap';
 import BreedGallery from './components/BreedGallery/BreedGallery';
-import DogGallery from './components/DogGallery/DogGallery';
 
 function App() {
   return (
@@ -16,9 +15,7 @@ function App() {
         </Container>
       </Jumbotron>
       <BreedGallery />
-      <DogGallery />
     </div>
-    
   );
 }
 

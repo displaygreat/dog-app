@@ -9,6 +9,13 @@ class BreedCard extends React.Component {
     // console.log(this.props);
   }
 
+  handleClick = (e) => {
+    this.props.addDog(e);
+    this.props.triggerShowCardsDogs(e);
+    console.log("hi");
+    console.log(this.props.addDog);
+  }
+
   render() {
     const breedName = this.props.breed.breedName;
     // let breedImage = this.props.breed.breedImage;
@@ -21,9 +28,9 @@ class BreedCard extends React.Component {
     // });
   
     return(
-    <Card style={{ width: '18rem' }} onClick={(index) => {this.props.addDog(index)}}>
+     <Card style={{ width: '18rem' }} >
         <div className="img-wrap">
-          <Card.Img className="dog-img" variant="top" src={this.props.breed.breedImage} data-breed={breedName} />
+          <Card.Img className="dog-img" variant="top" src={this.props.breed.breedImage} data-breed={breedName} onClick={this.handleClick} />
         </div>
         <Card.Body>
           <Card.Title>{breedName[0].toUpperCase()+breedName.slice(1)}</Card.Title>

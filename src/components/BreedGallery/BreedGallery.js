@@ -5,6 +5,7 @@ import BreedModel from '../../data-models/BreedModel';
 import BreedCard from '../BreedCard/BreedCard';
 import DogModel from '../../data-models/DogModel';
 import DogCard from '../DogCard/DogCard';
+import ModalDogImage from '../ModalDogImage/ModalDogImage'
 import { Container, Form, Button } from 'react-bootstrap';
 // import { v4 as uuidv4 } from 'uuid';
 
@@ -14,21 +15,39 @@ class BreedGallery extends React.Component {
     this.state = {
       breeds: [],
       dogs: [],
-      value: ''
+      value: '',
+      cardsBreeds: true,
+      cardsDogs: false,
+      showModal: false
     }
+  }
+
+  triggerShowCardsDogs = () => {
+    this.setState({
+      dogs: [],
+      cardsBreeds: false,
+      cardsDogs: true
+    })
+  }
+
+  triggerShowCardsBreeds = () => {
+    this.setState({
+      cardsBreeds: true,
+      cardsDogs: false
+    })
   }
 
   addDog = (e) => {
     let dogBreed = e.target.getAttribute("data-breed");
     axios.get(`https://dog.ceo/api/breed/${dogBreed}/images`)
         .then((result) => {
-          console.log(result);
+          // console.log(result);
           let arrImages = result.data.message;
           this.setState({
           dogs: this.state.dogs.concat(new DogModel(dogBreed, arrImages))
           })    
     })
-    console.log(dogBreed);
+    // console.log(dogBreed);
   }
 
   searchByBreed = (e) => {
@@ -39,14 +58,9 @@ class BreedGallery extends React.Component {
     })
   }
 
-  // updateImages = () => {
-  //   this.componentDidMount();
-  // }
-
-  // handlerBreed = () => {
-  //   let breed = this.state;
-  //   console.log(breed);
-  // }
+  updateImages = () => {
+    
+  }
 
   componentDidMount() {
 
@@ -85,31 +99,37 @@ class BreedGallery extends React.Component {
     const dogGallery = this.state.dogs;
 
     return(
-      <div className="c-breed-gallery">
-        <Container>
-          <h2 className="subtitle my-5">Breeds Gallery</h2>
-          <div className="nav">
-            <Form.Control className="w-25" type="search" placeholder="Search by breed" onChange={this.searchByBreed}/>
-            <Button variant="outline-light" onClick={this.updateImages}>Update Images</Button>
-          </div>
-          <div className="cards">
-            {filteredBreedGallery.map((breed, index) => {
-              return <BreedCard key={index} breed={breed} addDog={this.addDog}></BreedCard>
-            })}
-
-            {/* {dogGallery.map((dog,index) => {
-              return <DogCard key={index} dog={dog} ></DogCard>
-            })} */}
-          </div>
-          <div className="c-dog-gallery">
-          <h2 className="subtitle-dog my-5">Dog Gallery</h2>
-          <div className="cards">
-              {dogGallery.map((dog,index) => {
-                return <DogCard key={index} dog={dog} ></DogCard>
+      <div>
+      { this.state.cardsBreeds  && 
+        <div className="c-breed-gallery">
+          <Container>
+            <h2 className="subtitle my-5">Breeds Gallery</h2>
+            <div className="nav">
+              <Form.Control className="w-25" type="search" placeholder="Search by breed" onChange={this.searchByBreed}/>
+              <Button variant="outline-light" onClick={this.updateImages}>Update Images</Button>
+            </div>
+            <div className="cards">
+              {filteredBreedGallery.map((breed, index) => {
+                return <BreedCard key={index} breed={breed} addDog={this.addDog} triggerShowCardsDogs={this.triggerShowCardsDogs}></BreedCard>
               })}
-          </div>
+            </div>
+          </Container>
         </div>
-        </Container>
+      }
+      
+        { this.state.cardsDogs &&   
+          <div className="c-dog-gallery">
+            <Container>
+              <h2 className="subtitle-dog my-5">Dog Gallery</h2>
+              <div className="cards">
+                  {dogGallery.map((dog,index) => {
+                    return <DogCard key={index} dog={dog}></DogCard>
+                  })}
+              </div>
+              <button className="btn-new btn-prev" onClick={this.triggerShowCardsBreeds}>Go to Breed Gallery</button>
+            </Container>
+          </div>
+        }
       </div>
     )
   }

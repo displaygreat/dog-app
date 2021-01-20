@@ -1,7 +1,7 @@
 class DogModel {
-  constructor(dogName, dogImage) {
-    this.dogName = dogName;
-    this.dogImage = dogImage
+  constructor(dogBreed, arrImages) {
+    this.dogBreed = dogBreed;
+    this.arrImages = arrImages
   }
 }
 export default DogModel;
